@@ -189,290 +189,138 @@ il utilise l'interface ICv dans ejb comme tel:
    Et enfin on a les vues dans webapp:
    
    Exemple d'une vue d'affichage:    
-             <c:forEach var="stud" items="${listStudent}">
+            <c:forEach var="cvs" items="${cvs}">
                 <tr >
-                 <th scope="row">
-                          <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="qq" />
-                          </div>
-                 </th>
-                    <td><c:out value="${stud.firstName}" /></td>
-                    <td><c:out value="${stud.lastName}" /></td>
-                    <td><c:out value="${stud.birthdate}" /></td>
-                     <td><c:out value="${stud.phone}" /></td>
-                   
+                  
+                    <tr >
+                    
+               
+                    <td><c:out value="${cvs.nom}" /></td>
+                    <td><c:out value="${cvs.prenom}" /></td>
+                    <td><c:out value="${cvs.compte.email}" /></td>  
+                     <td><c:out value="${cvs.telephone}" /></td>
+                       <td><c:out value="${cvs.age}" /></td>
+                     
                    <td>
-                          <a type="button" href="student?idD=<c:out value="${stud.id}" />" class="btn btn-danger btn-sm px-3">
+                          <a type="button" href="cvs?idD=<c:out value="${cvs.id}" />" class="btn btn-outline-danger btn-sm px-2">
                        Delete
                           
                           </a>
                          
-                           <a type="button" href="student?idM=<c:out value="${stud.id}" />" class="btn btn-info btn-sm px-3">
+                           <a type="button" href="cvs?idP=<c:out value="${cvs.id}" />" class="btn btn-outline-info btn-sm px-2">
                            Plus ...
                           </a>
                           
-                           <a type="button" href="student?idP=<c:out value="${stud.id}" />" class="btn btn-primary btn-sm px-3">
-                            Update
+                           <a type="button" href="cvs?idI=<c:out value="${cvs.id}" />" class="btn btn-outline-info btn-sm px-2">
+                           Imprimer
                           </a>
+                          
+                          <a type="button" href="exp?cvid=<c:out value="${cvs.id}" />" class="btn btn-outline-primary btn-sm px-2">
+                           Experiences
+                          </a>
+                          
+                          
                         </td>
                    
 
                 </tr>
-            </c:forEach>
-                  
-                    </tbody>
-                  </table>
-           <nav aria-label="Navigation for students">
-        <ul class="pagination">
-            <c:if test="${page != 1}">
-                <li class="page-item"><a class="page-link"
-                    href="student?page=${ page - 1 }">Previous</a>
-                </li>
-            </c:if>
+                   
 
-            <c:forEach begin="1" end="${pages}" var="i">
-                <c:choose>
-                    <c:when test="${ page == i}">
-                        <li class="page-item active"><a class="page-link">
-                                ${i} <span class="sr-only">(current)</span></a>
-                        </li>
-                    </c:when>
-                    <c:otherwise>
-                        <li class="page-item"><a class="page-link"
-                            href="student?page=${i}">${i}</a>
-                        </li>
-                    </c:otherwise>
-                </c:choose>
-            </c:forEach>
-
-            <c:if test="${page lt pages}">
-                <li class="page-item"><a class="page-link"
-                    href="student?page=${page+1}">Next</a>
-                </li>
-            </c:if>
-        </ul>
-    </nav>
-             
+              
+                 </c:forEach>
+                
              
              
 Exemple d'un formulaire:
 
-     <form method="post" action="student" class="m-5">
-                 
-                   <% if(request.getAttribute("success") != null){%>
-                <div class="row form-group">
-                     <hr>
-                    <div class="col-md-6 ">
-                        <span class='text-success '><%= request.getAttribute("success") %></span>
-                    </div>
-                     <hr>
+       <% if(request.getAttribute("cvs") == null){%>
+            <form action="cvs" method="post" >
+              <div class="row">
+                <div class="col-md-6 form-group">
+                       <input hidden class="fadeIn second" name="id" value="<%= session.getAttribute("id") %>" >
+                
+                  <input type="text" name="nom" class="form-control" id="nom" placeholder="NOM" required>
                 </div>
-                    <%}%> 
-                     <% if(request.getAttribute("student") == null){%>
-                
-                   
-                  <table class="table table-borderless mb-0">
-                    <thead>
-                      <tr>
-                        
-                        <th scope="col"> 
-                        <div class="form-group">
-                          <label>FirstName :</label>
-                            <input class="form-input" type="text"  id="firstName" name="firstName" />
-                          </div>
-                          </th>
-                         
-                        <th scope="col">
-                         <div class="form-group">
-                          <label>LastName  :</label>
-                            <input class="form-input" type="text"  id="lastName" name="lastName" />
-                          </div>
-                          </th>
-                           </tr>
-                          <tr>
-                        <th scope="col">
-                         <div class="form-group">
-                          <label>BirthDate :</label>
-                            <input class="form-input" type="date"   id="date"  name="date" />
-                          </div>
-                          </th>
-                          
-                          <th scope="col">
-                         <div class="form-group">
-                          <label>Phone Number :</label>
-                            <input class="form-input" type="text"  id="phone" name="phone" />
-                          </div>
-                          </th>
-                       
-                      </tr>
-                      
-                     
-                        
-                        
-                    </thead>
-                    <tbody>
-                     
-                      
-            
-                      
-                    </tbody>
-                  </table>
-                  <div class="m-5 "> <button type="submit" class="btn btn-sm btn-success px-5">Enregistrer</button></div>
-                   <%}%> 
-                   
-                    <% if(request.getAttribute("success") != null){%>
-                <div class="row form-group">
-                     <hr>
-                    <div class="col-md-6 ">
-                        <span class='text-success '><%= request.getAttribute("success") %></span>
-                    </div>
-                     <hr>
+                <div class="col-md-6 form-group mt-3 mt-md-0">
+                  <input type="text" class="form-control" name="prenom" id="prenom" placeholder="PRENOM" required>
                 </div>
-                    <%}%> 
-                     <% if((request.getAttribute("student") != null) && (request.getAttribute("detail") == null ) ){%>
-                
-                   
-                  <table class="table table-borderless mb-0">
-                    <thead>
-                      <tr>
-                        
-                        <th scope="col"> 
-                          <input class="" type="text" hidden value="<c:out value="${student.id}" />"  id="id" name="id" />
-                        
-                        <div class="form-group">
-                          <label>FirstName :</label>
-                            <input class="form-input" type="text" value="<c:out value="${student.firstName}" />"  id="firstName" name="firstName" />
-                          </div>
-                          </th>
-                         
-                        <th scope="col">
-                         <div class="form-group">
-                          <label>LastName  :</label>
-                            <input class="form-input" type="text" value="<c:out value="${student.lastName}" />" id="lastName" name="lastName" />
-                          </div>
-                          </th>
-                           </tr>
-                          <tr>
-                        <th scope="col">
-                         <div class="form-group">
-                          <label>BirthDate : </label>
-                           
-                          </div>
-                           <input class="form-input" type="date" value="<c:out value="${student.birthdate}" />"   id="date"  name="date" />
-                          </th>
-                          
-                          <th scope="col">
-                         <div class="form-group">
-                          <label>Phone Number :</label>
-                            <input class="form-input" type="text" value="<c:out value="${student.phone}" />"  id="phone" name="phone" />
-                          </div>
-                          </th>
-                       
-                      </tr>
-                      
-                     
-                        
-                        
-                    </thead>
-                    <tbody>
-                     
-                      
-            
-                      
-                    </tbody>
-                  </table>
-                  <div class="m-5 "> <button type="submit" class="btn btn-sm btn-success px-5">Enregistrer</button></div>
-                   <%}%> 
-                   
-                    <% if( (request.getAttribute("detail") != null) && (request.getAttribute("student") != null ) ){%>
-                
-                   
-                  <table class="table table-borderless mb-0">
-                    <thead>
-                      <tr>
-                        
-                        <th scope="col"> 
-                          <input class="" type="text" hidden value="<c:out value="${student.id}" />"  id="id" name="id" />
-                        
-                        <div class="form-group">
-                          <label>FirstName :</label>
-                            <input class="form-input" type="text" value="<c:out value="${student.firstName}" />"  id="firstName" name="firstName" />
-                          </div>
-                          </th>
-                         
-                        <th scope="col">
-                         <div class="form-group">
-                          <label>LastName  :</label>
-                            <input class="form-input" type="text" value="<c:out value="${student.lastName}" />" id="lastName" name="lastName" />
-                          </div>
-                          </th>
-                           </tr>
-                          <tr>
-                        <th scope="col">
-                         <div class="form-group">
-                          <label>BirthDate : </label>
-                         <input class="form-input" type="date" value="<c:out value="${student.birthdate}" />"  id="date" name="date" />
-                           
-                          </div>
-                          
-                          </th>
-                          
-                          <th scope="col">
-                         <div class="form-group">
-                          <label>Téléphone :</label>
-                            <input class="form-input" type="text" value="<c:out value="${student.phone}" />"  id="phone" name="phone" />
-                          </div>
-                          </th>
-                       
-                      </tr>
-                      
-                      <tr> 
-                        <th> <label>Insriptions</label></th>
-                         </tr>
-                         <tr>
-                          <c:forEach var="inscr" items="${student.inscriptions}">
-                         
-                           <th scope="col">
-                         <div class="form-group">
-                          <label>Details :</label>
-                            <input class="form-input" type="text" value="<c:out value="${inscr.details}" />"  id="phone" name="phone" />
-                             </div>
-                          </th>
-                          
-                          <th scope="col">
-                         <div class="form-group">
-                          <label>Année: </label>
-                            <input class="form-input" type="text" value="<c:out value="${inscr.year.name}" />"  id="phone" name="phone" />
-                         </div>
-                         
-                          </th>
-                          </tr>
-                         </c:forEach>
-                         
-                     
-                      <tr>
-                      <th> 
-                      <a type="button" href="inscription?param=add" class="btn btn-sm btn-success px-5">Inscrire</a>
-                      <br></th>
-                       <th scope="col">
-                        
-                       <a type="button" href="student" class="btn btn-sm btn-danger px-5">Retour</a>
-                         </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                     
-                      
-            
-                      
-                    </tbody>
-                  </table>
-                 
-                   <%}%> 
-                   
-                   
-                   
-                  </form>
+              </div>
+              <div class="row">
+                <div class="col-md-6 form-group">
+                  <input type="number" name="age" class="form-control" id="age" placeholder="AGE" required>
+                </div>
+                <div class="col-md-6 form-group mt-3 mt-md-0">
+                  <input type="text" class="form-control" name="adresse" id="adresse" placeholder="ADRESSE" required>
+                </div>
+              </div>
+              
+              <div class="row">
+                <div class="col-md-6 form-group">
+                  <input type="text" name="specialite" class="form-control" id="specialite" placeholder="SPECIALITE" required>
+                </div>
+                <div class="col-md-6 form-group mt-3 mt-md-0">
+                    <select class="form-select " id="niveauEtude" name="niveauEtude" >
+					  <option selected >Niveau d'étude</option>
+					  <option value="Bac">Bac</option>
+					  <option value="Bac+1">Bac+1</option>
+					  <option value="Bac+2">Bac+2</option>
+					   <option value="Bac+3">Bac+3</option>
+					  <option value="Bac+4">Bac+4</option>
+					  <option value="Bac+5">Bac+5</option>
+					</select>
+                </div>
+              </div>
+              
+             
+              <div class="text-center"><button class="btn btn-primary" type="submit">Enregistrer</button></div>
+            </form>
+            <%}%> 
+         <% if(request.getAttribute("cvs") != null){%>
+
+ 
+ 
+         
+            <form action="cvs" method="post" >
+              <div class="row">
+                <div class="col-md-6 form-group">
+                 <input type="text" hidden name="cvid" class="form-control" id="cvid"  value="${cvs.id}" required>
+                  <input type="text" name="nom" class="form-control" id="nom" value="${cvs.nom}" required>
+                </div>
+                <div class="col-md-6 form-group mt-3 mt-md-0">
+                  <input type="text" class="form-control" name="prenom" id="prenom" value="${cvs.prenom}" required>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 form-group">
+                  <input type="number" name="age" class="form-control" id="age" value="${cvs.age}" required>
+                </div>
+                <div class="col-md-6 form-group mt-3 mt-md-0">
+                  <input type="text" class="form-control" name="adresse" id="adresse" value="${cvs.adresse}" required>
+                </div>
+              </div>
+              
+              <div class="row">
+                <div class="col-md-6 form-group">
+                  <input type="text" name="specialite" class="form-control" id="specialite" value="${cvs.specialite}" required>
+                </div>
+                <div class="col-md-6 form-group mt-3 mt-md-0">
+                    <select class="form-select " id="niveauEtude" name="niveauEtude" >
+					  <option selected >${cvs.niveauEtude}</option>
+					  <option value="Bac">Bac</option>
+					  <option value="Bac+1">Bac+1</option>
+					  <option value="Bac+2">Bac+2</option>
+					   <option value="Bac+3">Bac+3</option>
+					  <option value="Bac+4">Bac+4</option>
+					  <option value="Bac+5">Bac+5</option>
+					</select>
+                </div>
+              </div>
+              
+              
+              <div class="text-center"><button class="btn btn-primary" type="submit">Modifier</button></div>
+            </form>
+            <%}%> 
+              
                   
                Merci d'avoir prie le temps de regarder tout se bla bla!!!
    
